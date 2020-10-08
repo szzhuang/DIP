@@ -4,31 +4,26 @@ using namespace cv;
 
 int main()
 {
-	VideoCapture cap;
+	cv::Mat img = imread("D:\\SHUTU.png", 0);
+	float histgram[256] = { 0 };
+	int height = img.rows;
+	int width = img.cols;
+	float total = height * width;
 
-	cap.open(0);
-
-	if (!cap.isOpened())
+	for (int j = 0; j < height; j++)
 	{
-		std::cout << "不能打开视频文件" << std::endl;
-		return -1;
+		uchar* data = img.ptr<uchar>(j);
+		for (int i = 0; i < width; i++)
+		{
+			int value = data[i];
+			histgram[value]++;
+		}
 	}
-
-	double fps = cap.get(CAP_PROP_FPS);
-	std::cout << "fps" << fps << std::endl;
-	while (1)
+	for (int i = 0; i < 256; i++)
 	{
-		cv::Mat frame;
-		bool rSucess = cap.read(frame);
-		if (!rSucess)
-		{
-			std::cout << "不能从视频文件中读取帧" << std::endl;
-			break;
-		}
-		else
-		{
-			cv::imshow("frame", frame);
-		}
-		waitKey(30);
+		histgram[i] /= total;
+		std::cout << "histgram" << histgram[i] << std::endl;
 	}
+	waitKey(0);
+	return 0;
 }
