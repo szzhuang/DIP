@@ -4,31 +4,22 @@ using namespace cv;
 
 int main()
 {
-	VideoCapture cap;
+	cv::Mat img = imread("D:\\black.png");
 
-	cap.open(0);
+	//画直线
+	Point pt1(20, 20);
+	Point pt2(200, 200);
+	line(img, pt1, pt2, CV_RGB(255, 0, 0), 1, 8, 0);
+	imshow("加线条", img);
+	
+	//画矩形框
+	cv::Rect rect;
+	rect.x = 10;
+	rect.y = 10;
+	rect.width=200;
+	rect.height=200;
+	rectangle(img, rect, CV_RGB(255, 0, 0), 1, 8, 0);
+	imshow("加矩形框", img);
 
-	if (!cap.isOpened())
-	{
-		std::cout << "不能打开视频文件" << std::endl;
-		return -1;
-	}
-
-	double fps = cap.get(CAP_PROP_FPS);
-	std::cout << "fps" << fps << std::endl;
-	while (1)
-	{
-		cv::Mat frame;
-		bool rSucess = cap.read(frame);
-		if (!rSucess)
-		{
-			std::cout << "不能从视频文件中读取帧" << std::endl;
-			break;
-		}
-		else
-		{
-			cv::imshow("frame", frame);
-		}
-		waitKey(30);
-	}
+	waitKey(0);
 }
